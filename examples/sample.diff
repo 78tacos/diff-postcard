@@ -1,0 +1,55 @@
+diff --git a/src/greet.js b/src/greet.js
+index 1111111..2222222 100644
+--- a/src/greet.js
++++ b/src/greet.js
+@@ -1,8 +1,11 @@
+ export function greet(name) {
+-  return "Hello, " + name;
++  const who = name?.trim() || "friend";
++  return `Hello, ${who}`;
+ }
+
+ export function farewell(name) {
+-  return "Bye, " + name;
++  return `Bye, ${name}`;
+ }
++
++export const version = "1.0.0";
+diff --git a/src/math.js b/src/calc.js
+similarity index 80%
+rename from src/math.js
+rename to src/calc.js
+index 3333333..4444444 100644
+--- a/src/math.js
++++ b/src/calc.js
+@@ -1,4 +1,5 @@
+-export function add(a, b) {
++export function add(a, b, c = 0) {
++  // keep it boring and correct
+   return a + b;
+ }
+diff --git a/notes.md b/notes.md
+deleted file mode 100644
+index 5555555..0000000
+--- a/notes.md
++++ /dev/null
+@@ -1,3 +0,0 @@
+-# Scratch
+-
+-Remember to delete this file.
+diff --git a/README.md b/README.md
+new file mode 100644
+index 0000000..6666666
+--- /dev/null
++++ b/README.md
+@@ -0,0 +1,7 @@
++# calc
++
++Tiny helpers for a postcard demo.
++
++Special chars: <script>alert("xss")</script> & "quotes"
++
++Enjoy.
+diff --git a/assets/logo.png b/assets/logo.png
+index 7777777..8888888 100644
+Binary files a/assets/logo.png and b/assets/logo.png differ
