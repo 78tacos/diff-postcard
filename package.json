@@ -1,0 +1,37 @@
+{
+  "name": "diff-postcard",
+  "version": "1.0.0",
+  "description": "Turn a git diff into a shareable single-file HTML postcard",
+  "type": "module",
+  "bin": {
+    "diff-postcard": "bin/diff-postcard.js"
+  },
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "demo": "node bin/diff-postcard.js --file examples/sample.diff --out examples/sample.html --title \"Sample postcard\""
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "git",
+    "diff",
+    "html",
+    "cli",
+    "postcard"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/78tacos/diff-postcard.git"
+  }
+}
