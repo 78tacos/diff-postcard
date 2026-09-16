@@ -3,7 +3,6 @@ import { renderPostcard } from "./render.js";
 
 export { parseUnifiedDiff } from "./parse.js";
 export { renderPostcard } from "./render.js";
-export { escapeHtml } from "./escape.js";
 
 /**
  * @param {string} diffText

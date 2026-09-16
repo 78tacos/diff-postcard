@@ -5,7 +5,8 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseUnifiedDiff } from "../src/parse.js";
 import { renderPostcard } from "../src/render.js";
-import { diffToHtml, escapeHtml } from "../src/index.js";
+import { escapeHtml } from "../src/escape.js";
+import { diffToHtml } from "../src/index.js";
 
 const sample = readFileSync(
   join(dirname(fileURLToPath(import.meta.url)), "..", "examples", "sample.diff"),

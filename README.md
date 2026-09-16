@@ -28,12 +28,14 @@ Pipe a diff, or pass a file:
 git diff | node bin/diff-postcard.js > postcard.html
 git diff main...HEAD | node bin/diff-postcard.js --title "PR snapshot" -o postcard.html
 node bin/diff-postcard.js --file examples/sample.diff --out postcard.html
+node bin/diff-postcard.js examples/sample.diff -o postcard.html
 ```
 
 Options:
 
 | Flag | Meaning |
 | --- | --- |
+| `path/to.diff` | Positional path to a unified diff (same as `--file`) |
 | `-f, --file <path>` | Read the unified diff from a file instead of stdin |
 | `-o, --out <path>` | Write HTML to a file instead of stdout |
 | `-t, --title <text>` | Postcard title (default: `Diff postcard`) |
