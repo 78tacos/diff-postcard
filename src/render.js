@@ -115,10 +115,9 @@ body {
 }
 
 .masthead {
-  position: relative;
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 1rem 1.25rem;
+  gap: 1rem 1.5rem;
   align-items: start;
   padding: 1.75rem 1.75rem 1.5rem;
   margin-bottom: 1.5rem;
@@ -128,8 +127,18 @@ body {
   box-shadow: var(--shadow);
 }
 
+.masthead-copy {
+  min-width: 0;
+}
+
+.masthead-aside {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+
 .kicker {
-  grid-column: 1;
   margin: 0;
   font-size: 0.72rem;
   letter-spacing: 0.22em;
@@ -139,7 +148,6 @@ body {
 }
 
 h1 {
-  grid-column: 1;
   margin: 0.15rem 0 0;
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 4vw, 2.6rem);
@@ -149,7 +157,6 @@ h1 {
 }
 
 .stats {
-  grid-column: 1;
   display: flex;
   flex-wrap: wrap;
   gap: 1.25rem 1.75rem;
@@ -194,9 +201,8 @@ h1 {
 }
 
 .toolbar {
-  position: absolute;
-  right: 1.1rem;
-  bottom: 1.1rem;
+  display: flex;
+  justify-content: center;
 }
 
 #theme-toggle {
@@ -490,16 +496,20 @@ ${STYLES}
 <body>
 <main class="sheet">
   <header class="masthead">
-    <p class="kicker">diff postcard</p>
-    <h1>${escapeHtml(title)}</h1>
-    <dl class="stats">
-      <div><dt>files</dt><dd>${fileCount}</dd></div>
-      <div><dt>added</dt><dd class="add">+${parsed.additions}</dd></div>
-      <div><dt>removed</dt><dd class="del">−${parsed.deletions}</dd></div>
-    </dl>
-    <div class="stamp" aria-hidden="true">diff<br>mail</div>
-    <div class="toolbar">
-      <button type="button" id="theme-toggle">Toggle theme</button>
+    <div class="masthead-copy">
+      <p class="kicker">diff postcard</p>
+      <h1>${escapeHtml(title)}</h1>
+      <dl class="stats">
+        <div><dt>files</dt><dd>${fileCount}</dd></div>
+        <div><dt>added</dt><dd class="add">+${parsed.additions}</dd></div>
+        <div><dt>removed</dt><dd class="del">−${parsed.deletions}</dd></div>
+      </dl>
+    </div>
+    <div class="masthead-aside">
+      <div class="stamp" aria-hidden="true">diff<br>mail</div>
+      <div class="toolbar">
+        <button type="button" id="theme-toggle">Toggle theme</button>
+      </div>
     </div>
   </header>
   ${cards}

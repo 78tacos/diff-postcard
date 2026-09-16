@@ -107,10 +107,9 @@ body {
 }
 
 .masthead {
-  position: relative;
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 1rem 1.25rem;
+  gap: 1rem 1.5rem;
   align-items: start;
   padding: 1.75rem 1.75rem 1.5rem;
   margin-bottom: 1.5rem;
@@ -120,8 +119,18 @@ body {
   box-shadow: var(--shadow);
 }
 
+.masthead-copy {
+  min-width: 0;
+}
+
+.masthead-aside {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+
 .kicker {
-  grid-column: 1;
   margin: 0;
   font-size: 0.72rem;
   letter-spacing: 0.22em;
@@ -131,7 +140,6 @@ body {
 }
 
 h1 {
-  grid-column: 1;
   margin: 0.15rem 0 0;
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 4vw, 2.6rem);
@@ -141,7 +149,6 @@ h1 {
 }
 
 .stats {
-  grid-column: 1;
   display: flex;
   flex-wrap: wrap;
   gap: 1.25rem 1.75rem;
@@ -186,9 +193,8 @@ h1 {
 }
 
 .toolbar {
-  position: absolute;
-  right: 1.1rem;
-  bottom: 1.1rem;
+  display: flex;
+  justify-content: center;
 }
 
 #theme-toggle {
@@ -323,16 +329,20 @@ h1 {
 <body>
 <main class="sheet">
   <header class="masthead">
-    <p class="kicker">diff postcard</p>
-    <h1>Sample postcard</h1>
-    <dl class="stats">
-      <div><dt>files</dt><dd>5</dd></div>
-      <div><dt>added</dt><dd class="add">+14</dd></div>
-      <div><dt>removed</dt><dd class="del">−6</dd></div>
-    </dl>
-    <div class="stamp" aria-hidden="true">diff<br>mail</div>
-    <div class="toolbar">
-      <button type="button" id="theme-toggle">Toggle theme</button>
+    <div class="masthead-copy">
+      <p class="kicker">diff postcard</p>
+      <h1>Sample postcard</h1>
+      <dl class="stats">
+        <div><dt>files</dt><dd>5</dd></div>
+        <div><dt>added</dt><dd class="add">+14</dd></div>
+        <div><dt>removed</dt><dd class="del">−6</dd></div>
+      </dl>
+    </div>
+    <div class="masthead-aside">
+      <div class="stamp" aria-hidden="true">diff<br>mail</div>
+      <div class="toolbar">
+        <button type="button" id="theme-toggle">Toggle theme</button>
+      </div>
     </div>
   </header>
   <article class="file-card" data-path="src/greet.js"><header class="file-head"><span class="status">modified</span><h2>src/greet.js</h2><span class="file-stat">+5 −2</span></header><h3 class="hunk-head">@@ -1,8 +1,11 @@</h3><table class="diff"><tr class="row-ctx"><td class="ln">1</td><td class="ln">1</td><td class="sign"></td><td class="code">export function greet(name) {</td></tr><tr class="row-del"><td class="ln">2</td><td class="ln"></td><td class="sign">−</td><td class="code">  return &quot;Hello, &quot; + name;</td></tr><tr class="row-add"><td class="ln"></td><td class="ln">2</td><td class="sign">+</td><td class="code">  const who = name?.trim() || &quot;friend&quot;;</td></tr><tr class="row-add"><td class="ln"></td><td class="ln">3</td><td class="sign">+</td><td class="code">  return `Hello, ${who}`;</td></tr><tr class="row-ctx"><td class="ln">3</td><td class="ln">4</td><td class="sign"></td><td class="code">}</td></tr><tr class="row-ctx"><td class="ln">4</td><td class="ln">5</td><td class="sign"></td><td class="code"></td></tr><tr class="row-ctx"><td class="ln">5</td><td class="ln">6</td><td class="sign"></td><td class="code">export function farewell(name) {</td></tr><tr class="row-del"><td class="ln">6</td><td class="ln"></td><td class="sign">−</td><td class="code">  return &quot;Bye, &quot; + name;</td></tr><tr class="row-add"><td class="ln"></td><td class="ln">7</td><td class="sign">+</td><td class="code">  return `Bye, ${name}`;</td></tr><tr class="row-ctx"><td class="ln">7</td><td class="ln">8</td><td class="sign"></td><td class="code">}</td></tr><tr class="row-add"><td class="ln"></td><td class="ln">9</td><td class="sign">+</td><td class="code"></td></tr><tr class="row-add"><td class="ln"></td><td class="ln">10</td><td class="sign">+</td><td class="code">export const version = &quot;1.0.0&quot;;</td></tr></table></article>
