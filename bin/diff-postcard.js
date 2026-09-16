@@ -4,7 +4,9 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { parseUnifiedDiff, renderPostcard } from "../src/index.js";
 
-const VERSION = "1.0.0";
+const { version: VERSION } = JSON.parse(
+  await readFile(new URL("../package.json", import.meta.url), "utf8"),
+);
 
 const HELP = `
 diff-postcard — turn a unified git diff into a single-file HTML postcard
@@ -131,7 +133,7 @@ async function readStdin() {
 /**
  * @param {string[]} argv
  */
-export async function main(argv = process.argv.slice(2)) {
+async function main(argv = process.argv.slice(2)) {
   const options = parseArgs(argv);
   if (options.help) {
     process.stdout.write(`${HELP}\n`);
