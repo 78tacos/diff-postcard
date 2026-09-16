@@ -404,8 +404,9 @@ function rowClass(kind) {
     case "context":
       return "row-ctx";
     default: {
-      const _exhaustive = kind;
-      return _exhaustive;
+      const _exhaustive = /** @type {never} */ (kind);
+      void _exhaustive;
+      return "row-ctx";
     }
   }
 }
@@ -425,8 +426,9 @@ function signFor(kind) {
     case "context":
       return "";
     default: {
-      const _exhaustive = kind;
-      return _exhaustive;
+      const _exhaustive = /** @type {never} */ (kind);
+      void _exhaustive;
+      return "";
     }
   }
 }
@@ -451,8 +453,20 @@ function renderHunk(hunk) {
  * @param {FileDiff} file
  * @returns {string}
  */
+/**
+ * @param {unknown} value
+ * @returns {number}
+ */
+function numericCount(value) {
+  return Number(value) || 0;
+}
+
+/**
+ * @param {FileDiff} file
+ * @returns {string}
+ */
 function renderFile(file) {
-  const stats = `<span class="file-stat">+${file.additions} −${file.deletions}</span>`;
+  const stats = `<span class="file-stat">+${numericCount(file.additions)} −${numericCount(file.deletions)}</span>`;
   let body;
   if (file.binary) {
     body = `<p class="binary">Binary file — contents omitted.</p>`;
@@ -501,8 +515,8 @@ ${STYLES}
       <h1>${escapeHtml(title)}</h1>
       <dl class="stats">
         <div><dt>files</dt><dd>${fileCount}</dd></div>
-        <div><dt>added</dt><dd class="add">+${parsed.additions}</dd></div>
-        <div><dt>removed</dt><dd class="del">−${parsed.deletions}</dd></div>
+        <div><dt>added</dt><dd class="add">+${numericCount(parsed.additions)}</dd></div>
+        <div><dt>removed</dt><dd class="del">−${numericCount(parsed.deletions)}</dd></div>
       </dl>
     </div>
     <div class="masthead-aside">

@@ -68,6 +68,47 @@ describe("renderPostcard", () => {
     assert.match(html, /the diff was empty/);
   });
 
+  it("does not interpolate raw count or kind payloads into HTML", () => {
+    const payload = "<svg onload=alert(1)>";
+    const html = renderPostcard({
+      files: [
+        {
+          path: "crafted.js",
+          oldPath: "crafted.js",
+          newPath: "crafted.js",
+          status: "modify",
+          binary: false,
+          hunks: [
+            {
+              header: "@@ -1 +1 @@",
+              oldStart: 1,
+              oldCount: 1,
+              newStart: 1,
+              newCount: 1,
+              section: "",
+              lines: [
+                {
+                  kind: /** @type {never} */ (payload),
+                  text: "ok",
+                  oldLine: 1,
+                  newLine: 1,
+                },
+              ],
+            },
+          ],
+          additions: payload,
+          deletions: payload,
+        },
+      ],
+      additions: payload,
+      deletions: payload,
+    });
+    assert.doesNotMatch(html, /<svg onload=alert\(1\)>/);
+    assert.match(html, /<tr class="row-ctx">/);
+    assert.match(html, />\+0<\/dd>/);
+    assert.match(html, />−0<\/dd>/);
+  });
+
   it("includes added and deleted line markers in hunk tables", () => {
     const html = diffToHtml(`--- a/a.txt\n+++ b/a.txt\n@@ -1 +1 @@\n-old\n+new\n`);
     assert.match(html, /<tr class="row-del">/);

@@ -114,6 +114,21 @@ describe("parseUnifiedDiff", () => {
     assert.deepEqual(parsed, { files: [], additions: 0, deletions: 0 });
   });
 
+  it("does not treat quoted same-path git headers with spaces as renames", () => {
+    const diff = `diff --git "a/foo bar.js" "b/foo bar.js"
+--- a/foo bar.js
++++ b/foo bar.js
+@@ -1 +1 @@
+-old
++new
+`;
+    const [file] = parseUnifiedDiff(diff).files;
+    assert.equal(file.status, "modify");
+    assert.equal(file.path, "foo bar.js");
+    assert.equal(file.oldPath, "foo bar.js");
+    assert.equal(file.newPath, "foo bar.js");
+  });
+
   it("strips a BOM and normalizes CRLF", () => {
     const diff = "\uFEFF--- a/x\r\n+++ b/x\r\n@@ -1 +1 @@\r\n-a\r\n+b\r\n";
     const parsed = parseUnifiedDiff(diff);

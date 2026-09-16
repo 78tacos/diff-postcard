@@ -134,10 +134,10 @@ export function parseUnifiedDiff(text) {
       current.path = current.oldPath;
       return;
     }
-    if (current.status !== "rename") {
-      if (current.oldPath && current.newPath && current.oldPath !== current.newPath) {
-        current.status = "rename";
-      }
+    if (current.oldPath !== current.newPath) {
+      current.status = "rename";
+    } else if (current.status === "rename") {
+      current.status = "modify";
     }
     current.path =
       current.status === "rename"
@@ -157,7 +157,7 @@ export function parseUnifiedDiff(text) {
         oldPath,
         newPath,
         path: newPath || oldPath,
-        status: oldPath !== newPath ? "rename" : "modify",
+        status: "modify",
       });
       continue;
     }
