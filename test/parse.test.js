@@ -129,6 +129,16 @@ describe("parseUnifiedDiff", () => {
     assert.equal(file.newPath, "foo bar.js");
   });
 
+  it("does not treat quoted same-path git headers without ---/+++ as renames", () => {
+    const diff = `diff --git "a/foo bar.js" "b/foo bar.js"
+`;
+    const [file] = parseUnifiedDiff(diff).files;
+    assert.equal(file.status, "modify");
+    assert.equal(file.path, "foo bar.js");
+    assert.equal(file.oldPath, "foo bar.js");
+    assert.equal(file.newPath, "foo bar.js");
+  });
+
   it("strips a BOM and normalizes CRLF", () => {
     const diff = "\uFEFF--- a/x\r\n+++ b/x\r\n@@ -1 +1 @@\r\n-a\r\n+b\r\n";
     const parsed = parseUnifiedDiff(diff);

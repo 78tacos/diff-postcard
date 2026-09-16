@@ -3,7 +3,7 @@
  */
 
 const HUNK_RE = /^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@(.*)$/;
-const GIT_DIFF_RE = /^diff --git (?:a\/)?(.+?) (?:b\/)?(.+)$/;
+const GIT_DIFF_RE = /^diff --git ("[^"]+"|\S+) ("[^"]+"|\S+)$/;
 
 /**
  * @typedef {'context' | 'add' | 'del' | 'meta'} LineKind
