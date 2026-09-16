@@ -68,7 +68,7 @@ describe("renderPostcard", () => {
     assert.match(html, /the diff was empty/);
   });
 
-  it("does not interpolate raw count or kind payloads into HTML", () => {
+  it("does not interpolate raw count, kind, or status payloads into HTML", () => {
     const payload = "<svg onload=alert(1)>";
     const html = renderPostcard({
       files: [
@@ -76,7 +76,7 @@ describe("renderPostcard", () => {
           path: "crafted.js",
           oldPath: "crafted.js",
           newPath: "crafted.js",
-          status: "modify",
+          status: payload,
           binary: false,
           hunks: [
             {
@@ -87,10 +87,16 @@ describe("renderPostcard", () => {
               newCount: 1,
               lines: [
                 {
-                  kind: /** @type {never} */ (payload),
-                  text: "ok",
+                  kind: "context",
+                  text: "keep",
                   oldLine: 1,
                   newLine: 1,
+                },
+                {
+                  kind: /** @type {never} */ (payload),
+                  text: "ok",
+                  oldLine: 2,
+                  newLine: 2,
                 },
               ],
             },
@@ -103,6 +109,8 @@ describe("renderPostcard", () => {
       deletions: payload,
     });
     assert.doesNotMatch(html, /<svg onload=alert\(1\)>/);
+    assert.match(html, /<span class="status">modified<\/span>/);
+    assert.match(html, /<tr><td class="ln">1<\/td><td class="ln">1<\/td>/);
     assert.match(html, /<tr class="row-ctx">/);
     assert.match(html, />\+0<\/dd>/);
     assert.match(html, />−0<\/dd>/);

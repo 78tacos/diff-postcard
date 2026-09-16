@@ -348,25 +348,32 @@ const THEME_SCRIPT = `
 })();
 `.trim();
 
+const STATUS_LABEL = {
+  add: "added",
+  delete: "deleted",
+  rename: "renamed",
+  modify: "modified",
+};
+
+const ROW_CLASS = {
+  add: "row-add",
+  del: "row-del",
+  meta: "row-meta",
+  context: "",
+};
+
+const SIGN = {
+  add: "+",
+  del: "−",
+  meta: "\\",
+};
+
 /**
  * @param {FileStatus} status
  * @returns {string}
  */
 function statusLabel(status) {
-  switch (status) {
-    case "add":
-      return "added";
-    case "delete":
-      return "deleted";
-    case "rename":
-      return "renamed";
-    case "modify":
-      return "modified";
-    default: {
-      const _exhaustive = status;
-      return _exhaustive;
-    }
-  }
+  return STATUS_LABEL[status] ?? "modified";
 }
 
 /**
@@ -374,21 +381,7 @@ function statusLabel(status) {
  * @returns {string}
  */
 function rowClass(kind) {
-  switch (kind) {
-    case "add":
-      return "row-add";
-    case "del":
-      return "row-del";
-    case "meta":
-      return "row-meta";
-    case "context":
-      return "row-ctx";
-    default: {
-      const _exhaustive = /** @type {never} */ (kind);
-      void _exhaustive;
-      return "row-ctx";
-    }
-  }
+  return ROW_CLASS[kind] ?? "row-ctx";
 }
 
 /**
@@ -396,21 +389,7 @@ function rowClass(kind) {
  * @returns {string}
  */
 function signFor(kind) {
-  switch (kind) {
-    case "add":
-      return "+";
-    case "del":
-      return "−";
-    case "meta":
-      return "\\";
-    case "context":
-      return "";
-    default: {
-      const _exhaustive = /** @type {never} */ (kind);
-      void _exhaustive;
-      return "";
-    }
-  }
+  return SIGN[kind] ?? "";
 }
 
 /**
@@ -422,16 +401,14 @@ function renderHunk(hunk) {
     .map((line) => {
       const oldLn = line.oldLine == null ? "" : String(line.oldLine);
       const newLn = line.newLine == null ? "" : String(line.newLine);
-      return `<tr class="${rowClass(line.kind)}"><td class="ln">${escapeHtml(oldLn)}</td><td class="ln">${escapeHtml(newLn)}</td><td class="sign">${signFor(line.kind)}</td><td class="code">${escapeHtml(line.text)}</td></tr>`;
+      const cls = rowClass(line.kind);
+      const classAttr = cls ? ` class="${cls}"` : "";
+      return `<tr${classAttr}><td class="ln">${escapeHtml(oldLn)}</td><td class="ln">${escapeHtml(newLn)}</td><td class="sign">${signFor(line.kind)}</td><td class="code">${escapeHtml(line.text)}</td></tr>`;
     })
     .join("");
   return `<h3 class="hunk-head">${escapeHtml(hunk.header)}</h3><table class="diff">${rows}</table>`;
 }
 
-/**
- * @param {FileDiff} file
- * @returns {string}
- */
 /**
  * @param {unknown} value
  * @returns {number}
