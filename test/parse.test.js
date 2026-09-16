@@ -69,11 +69,13 @@ describe("parseUnifiedDiff", () => {
   it("treats omitted hunk counts as 1", () => {
     const diff = `--- a/one
 +++ b/one
-@@ -2 +2 @@
+@@ -2 +2 @@ function foo
 -old
 +new
 `;
     const hunk = parseUnifiedDiff(diff).files[0].hunks[0];
+    assert.equal(hunk.header, "@@ -2 +2 @@ function foo");
+    assert.equal(hunk.section, undefined);
     assert.equal(hunk.oldStart, 2);
     assert.equal(hunk.oldCount, 1);
     assert.equal(hunk.newStart, 2);
@@ -137,6 +139,39 @@ describe("parseUnifiedDiff", () => {
     assert.equal(file.path, "foo bar.js");
     assert.equal(file.oldPath, "foo bar.js");
     assert.equal(file.newPath, "foo bar.js");
+  });
+
+  it("derives rename from path inequality after rename from/to lines", () => {
+    const same = parseUnifiedDiff(`diff --git "a/foo bar.js" "b/foo bar.js"
+rename from "foo bar.js"
+rename to "foo bar.js"
+`).files[0];
+    assert.equal(same.status, "modify");
+    assert.equal(same.path, "foo bar.js");
+
+    const renamed = parseUnifiedDiff(`diff --git "a/old name.js" "b/new name.js"
+rename from "old name.js"
+rename to "new name.js"
+`).files[0];
+    assert.equal(renamed.status, "rename");
+    assert.equal(renamed.oldPath, "old name.js");
+    assert.equal(renamed.newPath, "new name.js");
+    assert.match(renamed.path, /old name\.js/);
+    assert.match(renamed.path, /new name\.js/);
+  });
+
+  it("honors new and deleted file mode without ---/+++ lines", () => {
+    const added = parseUnifiedDiff(`diff --git a/new.txt b/new.txt
+new file mode 100644
+`).files[0];
+    assert.equal(added.status, "add");
+    assert.equal(added.path, "new.txt");
+
+    const deleted = parseUnifiedDiff(`diff --git a/old.txt b/old.txt
+deleted file mode 100644
+`).files[0];
+    assert.equal(deleted.status, "delete");
+    assert.equal(deleted.path, "old.txt");
   });
 
   it("strips a BOM and normalizes CRLF", () => {

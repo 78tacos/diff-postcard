@@ -2,7 +2,7 @@
  * Parse unified diffs (git and classic) into a structured postcard model.
  */
 
-const HUNK_RE = /^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@(.*)$/;
+const HUNK_RE = /^@@ -(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@/;
 const GIT_DIFF_RE = /^diff --git ("[^"]+"|\S+) ("[^"]+"|\S+)$/;
 
 /**
@@ -20,7 +20,6 @@ const GIT_DIFF_RE = /^diff --git ("[^"]+"|\S+) ("[^"]+"|\S+)$/;
  * @property {number} oldCount
  * @property {number} newStart
  * @property {number} newCount
- * @property {string} section
  * @property {DiffLine[]} lines
  *
  * @typedef {'modify' | 'add' | 'delete' | 'rename'} FileStatus
@@ -136,8 +135,6 @@ export function parseUnifiedDiff(text) {
     }
     if (current.oldPath !== current.newPath) {
       current.status = "rename";
-    } else if (current.status === "rename") {
-      current.status = "modify";
     }
     current.path =
       current.status === "rename"
@@ -176,14 +173,12 @@ export function parseUnifiedDiff(text) {
 
     if (line.startsWith("rename from ")) {
       const file = ensureFile();
-      file.status = "rename";
       file.oldPath = cleanPath(line.slice("rename from ".length));
       continue;
     }
 
     if (line.startsWith("rename to ")) {
       const file = ensureFile();
-      file.status = "rename";
       file.newPath = cleanPath(line.slice("rename to ".length));
       continue;
     }
@@ -220,7 +215,6 @@ export function parseUnifiedDiff(text) {
         oldCount: hunkMatch[2] === undefined ? 1 : Number(hunkMatch[2]),
         newStart: Number(hunkMatch[3]),
         newCount: hunkMatch[4] === undefined ? 1 : Number(hunkMatch[4]),
-        section: (hunkMatch[5] ?? "").trim(),
         lines: [],
       };
       file.hunks.push(hunk);
@@ -230,11 +224,6 @@ export function parseUnifiedDiff(text) {
     }
 
     if (!hunk) {
-      continue;
-    }
-
-    const file = current;
-    if (!file) {
       continue;
     }
 
@@ -248,7 +237,7 @@ export function parseUnifiedDiff(text) {
         oldLine: null,
         newLine,
       });
-      file.additions += 1;
+      current.additions += 1;
       newLine += 1;
       continue;
     }
@@ -260,7 +249,7 @@ export function parseUnifiedDiff(text) {
         oldLine,
         newLine: null,
       });
-      file.deletions += 1;
+      current.deletions += 1;
       oldLine += 1;
       continue;
     }

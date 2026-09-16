@@ -85,7 +85,6 @@ describe("renderPostcard", () => {
               oldCount: 1,
               newStart: 1,
               newCount: 1,
-              section: "",
               lines: [
                 {
                   kind: /** @type {never} */ (payload),
@@ -110,7 +109,8 @@ describe("renderPostcard", () => {
   });
 
   it("includes added and deleted line markers in hunk tables", () => {
-    const html = diffToHtml(`--- a/a.txt\n+++ b/a.txt\n@@ -1 +1 @@\n-old\n+new\n`);
+    const html = diffToHtml(`--- a/a.txt\n+++ b/a.txt\n@@ -1 +1 @@ foo\n-old\n+new\n`);
+    assert.match(html, /@@ -1 \+1 @@ foo/);
     assert.match(html, /<tr class="row-del">/);
     assert.match(html, /<tr class="row-add">/);
     assert.match(html, />old<\/td>/);
