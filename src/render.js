@@ -418,7 +418,6 @@ function signFor(kind) {
  * @returns {string}
  */
 function renderHunk(hunk) {
-  const heading = hunk.section ? `${hunk.header}` : hunk.header;
   const rows = hunk.lines
     .map((line) => {
       const oldLn = line.oldLine == null ? "" : String(line.oldLine);
@@ -426,7 +425,7 @@ function renderHunk(hunk) {
       return `<tr class="${rowClass(line.kind)}"><td class="ln">${escapeHtml(oldLn)}</td><td class="ln">${escapeHtml(newLn)}</td><td class="sign">${signFor(line.kind)}</td><td class="code">${escapeHtml(line.text)}</td></tr>`;
     })
     .join("");
-  return `<h3 class="hunk-head">${escapeHtml(heading)}</h3><table class="diff">${rows}</table>`;
+  return `<h3 class="hunk-head">${escapeHtml(hunk.header)}</h3><table class="diff">${rows}</table>`;
 }
 
 /**
