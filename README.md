@@ -53,7 +53,7 @@ A checked-in multi-file diff lives at [`examples/sample.diff`](examples/sample.d
 npm run demo
 ```
 
-That writes [`examples/sample.html`](examples/sample.html). Open it locally:
+That writes `examples/sample.html`. Open it locally:
 
 ```bash
 # macOS
