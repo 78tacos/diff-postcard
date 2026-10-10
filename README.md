@@ -1,12 +1,12 @@
 # diff-postcard
 
-Turn a unified git diff into a **shareable, single-file HTML postcard**.
+Turn a unified git diff into a single-file HTML postcard.
 
-Each file and hunk becomes a card. Typography is the point. Dark and light themes follow the system preference and can be toggled offline — the HTML is self-contained (inline CSS, no CDN, no tracking).
+Each file is a card. Light and dark themes follow the system preference, and the page has a toggle that works offline. The CSS is inlined: no CDN, no tracking.
 
 ## Install
 
-Requires Node.js 18+.
+Requires Node.js 18+. There are no runtime dependencies.
 
 ```bash
 git clone https://github.com/78tacos/diff-postcard.git
@@ -14,7 +14,7 @@ cd diff-postcard
 npm install
 ```
 
-There are no runtime dependencies. `npm install` just makes the `diff-postcard` bin available locally. You can also run the script directly:
+`npm install` links the `diff-postcard` command in this checkout. You can also run the script directly:
 
 ```bash
 node bin/diff-postcard.js --help
@@ -43,11 +43,11 @@ Options:
 | `-h, --help` | Show help |
 | `-v, --version` | Show version |
 
-Open the generated HTML in any browser. The theme toggle stores the choice in `localStorage` when available and still works if you email or AirDrop the file.
+Open the HTML in a browser. The theme toggle stores the choice in `localStorage` when it can. The file does not need a network connection.
 
 ## Demo
 
-A checked-in multi-file diff lives at [`examples/sample.diff`](examples/sample.diff). Generate the matching postcard:
+[`examples/sample.diff`](examples/sample.diff) is a small diff: a modification, a rename, an add, a delete, a binary file, and text that has to be escaped. Generate the postcard:
 
 ```bash
 npm run demo
@@ -62,11 +62,9 @@ open examples/sample.html
 xdg-open examples/sample.html
 ```
 
-The sample includes a modification, a rename, an add, a delete, a binary file, and escaped HTML in the diff text.
-
 ## Library
 
-The parser and renderer are plain ESM with no build step:
+The parser and renderer are plain ESM, with no build step:
 
 ```js
 import { diffToHtml, parseUnifiedDiff, renderPostcard } from "diff-postcard";
@@ -80,7 +78,7 @@ const html = diffToHtml(diffText, { title: "Sprint 12", theme: "system" });
 npm test
 ```
 
-Uses Node's built-in test runner (`node --test`). Coverage is the unified-diff parser plus HTML output assertions (cards, escaping, theme, no CDN).
+Tests use Node's built-in runner (`node --test`).
 
 ## License
 
